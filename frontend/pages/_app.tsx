@@ -1,25 +1,45 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import PropType from 'prop-types';
-import NProgress from 'nprogress';
-import Router from 'next/router';
 import { ApolloProvider } from '@apollo/client';
-import Page from '../components/Page';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import { ThemeProvider } from '@material-ui/core/styles';
+import Router from 'next/router';
+import NProgress from 'nprogress';
+import PropType from 'prop-types';
+import React, { useEffect } from 'react';
+import Page from '../components/layout/Page';
 import '../components/styles/nprogress.css';
-import withData from '../lib/withData';
 import { CartStateProvider } from '../lib/cartState';
+import { DrawerStateProvider } from '../lib/drawerState';
+import withData from '../lib/withData';
+import theme from '../theme';
 
 Router.events.on('routeChangeStart', () => NProgress.start());
 Router.events.on('routeChangeComplete', () => NProgress.done());
 Router.events.on('routeChangeError', () => NProgress.done());
 
 function MyApp({ Component, pageProps, apollo }) {
+  
+  useEffect(() => {
+    // Remove the server-side injected CSS.
+    const jssStyles = document.querySelector('#jss-server-side');
+    if (jssStyles) {
+      jssStyles.parentElement.removeChild(jssStyles);
+    }
+  }, []);
+
   return (
     <ApolloProvider client={apollo}>
-      <CartStateProvider>
-        <Page>
-          <Component {...pageProps} />
-        </Page>
-      </CartStateProvider>
+      <ThemeProvider theme={theme}>
+        {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+        <CssBaseline />
+        <CartStateProvider>
+          <DrawerStateProvider>
+            <Page>
+              <Component {...pageProps} />
+            </Page>
+          </DrawerStateProvider>
+        </CartStateProvider>
+      </ThemeProvider>
     </ApolloProvider>
   );
 }
