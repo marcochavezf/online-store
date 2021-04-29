@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
+import React from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
-import Header from './Header';
+import Cart from '../Cart';
+import PersistentDrawerLeft from './PersistentDrawerLeft';
 
 const GlobalStyles = createGlobalStyle`
   @font-face {
@@ -54,9 +56,12 @@ export default function Page({ children }) {
   return (
     <div>
       {/* <GlobalStyles /> */}
-      <Header />
+      {/* <Header /> */}
       {/* <InnerStyles>{children}</InnerStyles> */}
-      {children}
+      <PersistentDrawerLeft >
+        {children}
+      </PersistentDrawerLeft>
+      <Cart />
     </div>
   );
 }

@@ -1,8 +1,8 @@
 import { useQuery } from '@apollo/client';
 import gql from 'graphql-tag';
-import styled from 'styled-components';
-import Link from 'next/link';
 import Head from 'next/head';
+import Link from 'next/link';
+import styled from 'styled-components';
 import ErrorMessage from '../components/ErrorMessage';
 import OrderItemStyles from '../components/styles/OrderItemStyles';
 import formatMoney from '../lib/formatMoney';
@@ -55,7 +55,7 @@ export default function OrdersPage() {
       <h2>You have {allOrders.length} orders!</h2>
       <OrderUl>
         {allOrders.map((order) => (
-          <OrderItemStyles>
+          <OrderItemStyles key={order.id}>
             <Link href={`/order/${order.id}`}>
               <a>
                 <div className="order-meta">

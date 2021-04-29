@@ -1,13 +1,10 @@
-import { ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import ListAltIcon from '@material-ui/icons/ListAlt';
 import MenuIcon from '@material-ui/icons/Menu';
-import PostAddIcon from '@material-ui/icons/PostAdd';
 import { useRouter } from 'next/router';
 import React from 'react';
 import styled from 'styled-components';
@@ -91,14 +88,14 @@ export default function Header() {
 
   // return <ButtonAppBar />
   return <PersistentDrawerLeft >
-    <ListItem button onClick={handleClick('/products')}>
+    {/* <ListItem button onClick={handleClick('/products')}>
       <ListItemIcon><ListAltIcon /></ListItemIcon>
       <ListItemText primary='Products' />
     </ListItem>
     {user && <ListItem button onClick={handleClick('/sell')}>
       <ListItemIcon><PostAddIcon /></ListItemIcon>
       <ListItemText primary='Sell' />
-    </ListItem>}
+    </ListItem>} */}
   </PersistentDrawerLeft>
 
   // return (

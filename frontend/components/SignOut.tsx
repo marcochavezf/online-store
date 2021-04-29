@@ -1,4 +1,5 @@
 import { useMutation } from '@apollo/client';
+import { MenuItem } from '@material-ui/core';
 import gql from 'graphql-tag';
 import { CURRENT_USER_QUERY } from './User';
 
@@ -8,13 +9,15 @@ const SIGN_OUT_MUTATION = gql`
   }
 `;
 
-export default function SignOut() {
+export default function SignOut({ postSignOut }: { postSignOut: () => void }) {
   const [signout] = useMutation(SIGN_OUT_MUTATION, {
     refetchQueries: [{ query: CURRENT_USER_QUERY }],
   });
+  const handleClick = () => {
+    signout();
+    postSignOut();
+  }
   return (
-    <button type="button" onClick={signout}>
-      Sign Out
-    </button>
+    <MenuItem onClick={handleClick}>Sign Out</MenuItem>
   );
 }

@@ -1,8 +1,8 @@
-import gql from 'graphql-tag';
 import { useMutation } from '@apollo/client';
-import Form from './styles/Form';
+import gql from 'graphql-tag';
 import useForm from '../lib/useForm';
 import Error from './ErrorMessage';
+import Form from './styles/Form';
 
 const RESET_MUTATION = gql`
   mutation RESET_MUTATION(
@@ -38,8 +38,8 @@ export default function Reset({ token }) {
     e.preventDefault(); // stop the form from submitting
     console.log(inputs);
     const res = await reset().catch(console.error);
-    console.log(res);
-    console.log({ data, loading, error });
+    // console.log(res);
+    // console.log({ data, loading, error });
     resetForm();
     // Send the email and password to the graphqlAPI
   }
