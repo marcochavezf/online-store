@@ -1,5 +1,6 @@
 import { Badge, InputBase, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
+import Container from '@material-ui/core/Container';
 import Divider from '@material-ui/core/Divider';
 import Drawer from '@material-ui/core/Drawer';
 import IconButton from '@material-ui/core/IconButton';
@@ -20,7 +21,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import clsx from 'clsx';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useCart } from '../../lib/cartState';
 import { useDrawer } from '../../lib/drawerState';
 import Search from '../Search';
@@ -40,7 +41,7 @@ const useStyles = makeStyles((theme: Theme) =>
         duration: theme.transitions.duration.leavingScreen,
       }),
     },
-    appBarShift: {     
+    appBarShift: {
       width: `calc(100% - ${drawerWidth}px)`,
       marginLeft: drawerWidth,
       transition: theme.transitions.create(['margin', 'width'], {
@@ -146,6 +147,8 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
+const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
 export default function PersistentDrawerLeft({ children }) {
   const classes = useStyles();
   const theme = useTheme();
@@ -193,7 +196,7 @@ export default function PersistentDrawerLeft({ children }) {
       onClose={handleMenuClose}
     >
       {user ? [
-        <MenuItem key="1" onClick={navigateTo('/orders')}>Orders</MenuItem>,
+        <MenuItem key="1" onClick={navigateTo('/orders')}>My Orders</MenuItem>,
         <SignOut key="2" postSignOut={handleMenuClose} />
       ] : [
         <MenuItem key="1" onClick={navigateTo('/signin')}>Sign In</MenuItem>,
@@ -260,7 +263,7 @@ export default function PersistentDrawerLeft({ children }) {
           >
             <MenuIcon />
           </IconButton>
-          
+
           <Typography variant="h6" noWrap>
             Online Store
           </Typography>
@@ -280,13 +283,13 @@ export default function PersistentDrawerLeft({ children }) {
               inputProps={{ 'aria-label': 'search' }}
             />
           </div>
-          
+
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            
-            { user && (
-              <IconButton 
-                aria-label={`show ${ getTotalCartItems(user) } cart items`} 
+
+            {user && (
+              <IconButton
+                aria-label={`show ${getTotalCartItems(user)} cart items`}
                 onClick={toggleCart}
                 color="inherit">
                 <Badge badgeContent={getTotalCartItems(user)} color="secondary">
@@ -294,7 +297,7 @@ export default function PersistentDrawerLeft({ children }) {
                 </Badge>
               </IconButton>
             )}
-            
+
             <IconButton
               edge="end"
               aria-label="account of current user"
@@ -306,7 +309,7 @@ export default function PersistentDrawerLeft({ children }) {
               <AccountCircle />
             </IconButton>
           </div>
-          
+
           <div className={classes.sectionMobile}>
             <IconButton
               aria-label="show more"
@@ -357,7 +360,11 @@ export default function PersistentDrawerLeft({ children }) {
         })}
       >
         <div className={classes.drawerHeader} />
-        {children}
+
+        <Container maxWidth="md">
+          {children}
+        </Container>
+
       </main>
 
       {renderMobileMenu}

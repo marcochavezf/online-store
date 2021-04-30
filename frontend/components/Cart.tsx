@@ -1,12 +1,12 @@
+import { Avatar, Container, CssBaseline, Divider, Drawer, makeStyles, Typography } from '@material-ui/core';
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import React from 'react';
 import styled from 'styled-components';
 import calcTotalPrice from '../lib/calcTotalPrice';
 import { useCart } from '../lib/cartState';
 import formatMoney from '../lib/formatMoney';
 import { Checkout } from './Checkout';
 import RemoveFromCart from './RemoveFromCart';
-import CartStyles from './styles/CartStyles';
-import CloseButton from './styles/CloseButton';
-import Supreme from './styles/Supreme';
 import { useUser } from './User';
 
 const CartItemStyles = styled.li`
@@ -47,25 +47,64 @@ function CartItem({ cartItem }) {
   );
 }
 
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    marginTop: theme.spacing(8),
+    marginBottom: theme.spacing(4),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
+  },
+  cartList: {
+    marginTop: theme.spacing(4),
+    marginBottom: theme.spacing(4),
+  },
+  checkout: {
+    marginTop: theme.spacing(6),
+  },
+}));
+
 export default function Cart() {
+  const classes = useStyles();
   const me = useUser();
   const { cartOpen, closeCart } = useCart();
   if (!me) return null;
   return (
-    <CartStyles open={cartOpen}>
-      <header>
-        <Supreme>{me.name}'s Cart</Supreme>
-        <CloseButton onClick={closeCart}>&times;</CloseButton>
-      </header>
-      <ul>
-        {me.cart.map((cartItem) => (
-          <CartItem key={cartItem.id} cartItem={cartItem} />
-        ))}
-      </ul>
-      <footer>
-        <p>{formatMoney(calcTotalPrice(me.cart))}</p>
-        <Checkout />
-      </footer>
-    </CartStyles>
+    <Drawer anchor={'right'} open={cartOpen} onClose={closeCart}>
+
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <div className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <ShoppingCartIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            {me.name}'s Cart
+        </Typography>
+        </div>
+
+        <Divider />
+
+        <div className={classes.cartList}>
+        <ul>
+          {me.cart.map((cartItem) => (
+            <CartItem key={cartItem.id} cartItem={cartItem} />
+          ))}
+        </ul>
+        </div>
+        <Divider />
+
+        <footer className={classes.checkout}>
+          <p>Total: {formatMoney(calcTotalPrice(me.cart))}</p>
+          <Checkout />
+        </footer>
+        <Divider />
+
+      </Container>
+    </Drawer>
   );
 }
