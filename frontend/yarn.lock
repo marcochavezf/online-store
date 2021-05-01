@@ -2972,6 +2972,14 @@ domutils@^2.5.2, domutils@^2.6.0:
     domelementtype "^2.2.0"
     domhandler "^4.2.0"
 
+dotenvenc@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/dotenvenc/-/dotenvenc-2.0.1.tgz#7fda4f3e3c3182b084f589d4dbd5515dd833ef26"
+  integrity sha512-Ri1WKxb7vWTanrBZU+oTnKTWB1YEik8VES1yEA7IuqTYnFUTEUZXS/ScKYx8QOLJNkB+mmhdYWPGCDFXYjHgDg==
+  dependencies:
+    md5-file "3.1.1"
+    minimist "1.2.5"
+
 downshift@^6.0.12:
   version "6.1.3"
   resolved "https://registry.yarnpkg.com/downshift/-/downshift-6.1.3.tgz#e794b7805d24810968f21e81ad6bdd9f3fdc40da"
@@ -5242,6 +5250,11 @@ map-visit@^1.0.0:
   dependencies:
     object-visit "^1.0.0"
 
+md5-file@3.1.1:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/md5-file/-/md5-file-3.1.1.tgz#db3c92c09bbda5c2de883fa5490dd711fddbbab9"
+  integrity sha1-2zySwJu9pcLeiD+lSQ3XEf3burk=
+
 md5.js@^1.3.4:
   version "1.3.5"
   resolved "https://registry.yarnpkg.com/md5.js/-/md5.js-1.3.5.tgz#b5d07b8e3216e3e27cd728d72f70d1e6a342005f"
@@ -5335,7 +5348,7 @@ minimatch@^3.0.4:
   dependencies:
     brace-expansion "^1.1.7"
 
-minimist@^1.1.1, minimist@^1.2.0, minimist@^1.2.5:
+minimist@1.2.5, minimist@^1.1.1, minimist@^1.2.0, minimist@^1.2.5:
   version "1.2.5"
   resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.5.tgz#67d66014b66a6a8aaa0c083c5fd58df4e4e97602"
   integrity sha512-FM9nNUYrRBAELZQT3xeZQ7fmMOBg6nWNmJKTcgsJeaLstP/UODVpGsr5OhXhhXg6f+qtJ8uiZ+PUxkDWcgIXLw==
