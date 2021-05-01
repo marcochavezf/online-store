@@ -1,13 +1,13 @@
 {
-  "name": "sick-fits-backend",
-  "version": "2.0.0",
+  "name": "online-store-backend",
+  "version": "1.0.0",
   "private": true,
-  "author": "Wes Bos",
+  "author": "Marco Chávez",
   "license": "MIT",
   "scripts": {
     "dev": "keystone-next",
     "seed-data": "keystone-next --seed-data",
-    "decrypt": "dotenvenc -d"
+    "decrypt": "dotenvenc -d $PASSWORD"
   },
   "eslintConfig": {
     "extends": "wesbos/typescript.js",
@@ -73,5 +73,5 @@
   "engines": {
     "node": ">=10.0.0"
   },
-  "repository": "https://github.com/keystonejs/keystone/tree/master/examples-next/ecommerce"
+  "repository": "https://github.com/keystonejs/keystone/tree/master/examples/ecommerce"
 }
