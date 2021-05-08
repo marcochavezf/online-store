@@ -1,6 +1,5 @@
 import { Avatar, Container, CssBaseline, Divider, Drawer, makeStyles, Typography } from '@material-ui/core';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
-import React from 'react';
 import styled from 'styled-components';
 import calcTotalPrice from '../../lib/calcTotalPrice';
 import formatMoney from '../../lib/formatMoney';
@@ -8,6 +7,33 @@ import { useUser } from '../../lib/hooks/useUser';
 import { useCart } from '../../lib/providers/cartState';
 import { Checkout } from './Checkout';
 import RemoveFromCart from './RemoveFromCart';
+
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    marginTop: theme.spacing(8),
+    marginBottom: theme.spacing(4),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
+  },
+  cartList: {
+    marginTop: theme.spacing(4),
+    marginBottom: theme.spacing(4),
+  },
+  checkout: {
+    marginTop: theme.spacing(6),
+  },
+  main: {
+    minWidth: '444px',
+  },
+  cartEmtpy: {
+    textAlign: 'center',
+  }
+}));
 
 const CartItemStyles = styled.li`
   padding: 1rem 0;
@@ -49,27 +75,6 @@ function CartItem({ cartItem }) {
   );
 }
 
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    marginTop: theme.spacing(8),
-    marginBottom: theme.spacing(4),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  cartList: {
-    marginTop: theme.spacing(4),
-    marginBottom: theme.spacing(4),
-  },
-  checkout: {
-    marginTop: theme.spacing(6),
-  },
-}));
-
 export default function Cart() {
   const classes = useStyles();
   const me = useUser();
@@ -78,7 +83,7 @@ export default function Cart() {
   return (
     <Drawer anchor={'right'} open={cartOpen} onClose={closeCart}>
 
-      <Container component="main" maxWidth="xs">
+      <Container component="main" maxWidth="xs" className={classes.main}>
         <CssBaseline />
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>
@@ -92,11 +97,17 @@ export default function Cart() {
         <Divider />
 
         <div className={classes.cartList}>
-        <ul>
-          {me.cart.map((cartItem) => (
-            <CartItem key={cartItem.id} cartItem={cartItem} />
-          ))}
-        </ul>
+
+          { !me.cart.length && (
+            <Typography component="h3" variant="h6" className={classes.cartEmtpy}>
+              Your Cart Is Empty
+            </Typography>
+          )}
+          <ul>
+            {me.cart.map((cartItem) => (
+              <CartItem key={cartItem.id} cartItem={cartItem} />
+            ))}
+          </ul>
         </div>
         <Divider />
 

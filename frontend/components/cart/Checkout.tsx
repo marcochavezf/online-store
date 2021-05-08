@@ -111,7 +111,7 @@ function CheckoutForm() {
           {error && <p style={{ fontSize: 12 }}>{error.message}</p>}
           {graphQLError && <p style={{ fontSize: 12 }}>{graphQLError.message}</p>}
           <CardElement />
-          <Button variant="contained" color="primary">
+          <Button type="submit" variant="contained" color="primary">
             Check Out Now
           </Button>
         </form>

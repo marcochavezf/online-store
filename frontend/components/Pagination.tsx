@@ -1,10 +1,18 @@
 import { useQuery } from '@apollo/client';
+import { makeStyles } from '@material-ui/core';
+import Pagination from '@material-ui/lab/Pagination';
 import gql from 'graphql-tag';
-import Head from 'next/head';
-import Link from 'next/link';
+import { useRouter } from 'next/router';
+import React from 'react';
 import { perPage } from '../config';
 import DisplayError from './ErrorMessage';
-import PaginationStyles from './styles/PaginationStyles';
+
+const useStyles = makeStyles((theme) => ({
+  pagination: {
+    marginTop: '10px',
+    marginBottom: '30px',
+  },
+}));
 
 export const PAGINATION_QUERY = gql`
   query PAGINATION_QUERY {
@@ -14,29 +22,21 @@ export const PAGINATION_QUERY = gql`
   }
 `;
 
-export default function Pagination({ page }) {
+export default function CustomPagination({ page }) {
   const { error, loading, data } = useQuery(PAGINATION_QUERY);
-  if (loading) return 'Loading...';
+  const router = useRouter();
+  const classes = useStyles();
+  if (loading) return null;
   if (error) return <DisplayError error={error} />;
   const { count } = data._allProductsMeta;
   const pageCount = Math.ceil(count / perPage);
   return (
-    <PaginationStyles>
-      <Head>
-        <title>
-          Sick Fits - Page {page} of {pageCount}
-        </title>
-      </Head>
-      <Link href={`/products/${page - 1}`}>
-        <a aria-disabled={page <= 1}>← Prev</a>
-      </Link>
-      <p>
-        Page {page} of {pageCount}
-      </p>
-      <p>{count} Items Total</p>
-      <Link href={`/products/${page + 1}`}>
-        <a aria-disabled={page >= pageCount}>Next →</a>
-      </Link>
-    </PaginationStyles>
+    <Pagination 
+      page={page}
+      count={pageCount}
+      size="large"
+      className={classes.pagination}
+      onChange={(event, page) => router.push(`/products/${page}`)}
+    />
   );
 }

@@ -3,6 +3,7 @@ import { IconButton, makeStyles } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import gql from 'graphql-tag';
 import React from 'react';
+import { CURRENT_USER_QUERY } from '../../lib/hooks/useUser';
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -28,6 +29,7 @@ export default function RemoveFromCart({ id }) {
   const [removeFromCart, { loading }] = useMutation(REMOVE_FROM_CART_MUTATION, {
     variables: { id },
     update,
+    refetchQueries: [{ query: CURRENT_USER_QUERY }],
     // optimisticResponse: {
     //   deleteCartItem: {
     //     __typename: 'CartItem',
