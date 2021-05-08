@@ -60,12 +60,12 @@ export const rules = {
     return { order: { user: { id: session.itemId } } };
   },
   canReadProducts({ session }: ListAccessArgs) {
-    if (!isSignedIn({ session })) {
-      return false;
-    }
-    if (permissions.canManageProducts({ session })) {
-      return true; // They can read everything!
-    }
+    // if (!isSignedIn({ session })) {
+    //   return false;
+    // }
+    // if (permissions.canManageProducts({ session })) {
+    //   return true; // They can read everything!
+    // }
     // They should only see available products (based on the status field)
     return { status: 'AVAILABLE' };
   },
