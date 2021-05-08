@@ -1,6 +1,6 @@
 import { any } from 'prop-types';
-import RequestReset from '../components/RequestReset';
-import Reset from '../components/Reset';
+import RequestReset from '../components/auth/RequestReset';
+import ResetPassword from '../components/auth/ResetPassword';
 
 export default function ResetPage({ query }) {
   if (!query?.token) {
@@ -13,7 +13,7 @@ export default function ResetPage({ query }) {
   }
   return (
     <div>
-      <Reset token={query.token} />
+      <ResetPassword token={query.token} />
     </div>
   );
 }

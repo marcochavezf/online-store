@@ -1,10 +1,10 @@
 import { useMutation } from '@apollo/client';
 import gql from 'graphql-tag';
 import Router from 'next/router';
-import useForm from '../lib/useForm';
-import DisplayError from './ErrorMessage';
+import useForm from '../../lib/hooks/useForm';
+import DisplayError from '../ErrorMessage';
+import Form from '../styles/Form';
 import { ALL_PRODUCTS_QUERY } from './Products';
-import Form from './styles/Form';
 
 const CREATE_PRODUCT_MUTATION = gql`
   mutation CREATE_PRODUCT_MUTATION(

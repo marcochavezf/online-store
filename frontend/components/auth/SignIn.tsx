@@ -1,9 +1,9 @@
-import gql from 'graphql-tag';
 import { useMutation } from '@apollo/client';
-import Form from './styles/Form';
-import useForm from '../lib/useForm';
-import { CURRENT_USER_QUERY } from './User';
-import Error from './ErrorMessage';
+import gql from 'graphql-tag';
+import useForm from '../../lib/hooks/useForm';
+import { CURRENT_USER_QUERY } from '../../lib/hooks/useUser';
+import Error from '../ErrorMessage';
+import Form from '../styles/Form';
 
 const SIGNIN_MUTATION = gql`
   mutation SIGNIN_MUTATION($email: String!, $password: String!) {

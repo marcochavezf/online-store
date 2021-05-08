@@ -8,8 +8,8 @@ import PropType from 'prop-types';
 import React, { useEffect } from 'react';
 import Page from '../components/layout/Page';
 import '../components/styles/nprogress.css';
-import { CartStateProvider } from '../lib/cartState';
-import { DrawerStateProvider } from '../lib/drawerState';
+import { CartStateProvider } from '../lib/providers/cartState';
+import { DrawerStateProvider } from '../lib/providers/drawerState';
 import withData from '../lib/withData';
 import theme from '../theme';
 

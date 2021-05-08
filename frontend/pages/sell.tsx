@@ -1,5 +1,5 @@
-import CreateProduct from '../components/CreateProduct';
-import PleaseSignIn from '../components/PleaseSignIn';
+import PleaseSignIn from '../components/auth/PleaseSignIn';
+import CreateProduct from '../components/product/CreateProduct';
 
 export default function SellPage() {
   return (

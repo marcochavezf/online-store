@@ -2,12 +2,12 @@ import { Avatar, Container, CssBaseline, Divider, Drawer, makeStyles, Typography
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import React from 'react';
 import styled from 'styled-components';
-import calcTotalPrice from '../lib/calcTotalPrice';
-import { useCart } from '../lib/cartState';
-import formatMoney from '../lib/formatMoney';
+import calcTotalPrice from '../../lib/calcTotalPrice';
+import formatMoney from '../../lib/formatMoney';
+import { useUser } from '../../lib/hooks/useUser';
+import { useCart } from '../../lib/providers/cartState';
 import { Checkout } from './Checkout';
 import RemoveFromCart from './RemoveFromCart';
-import { useUser } from './User';
 
 const CartItemStyles = styled.li`
   padding: 1rem 0;
@@ -34,13 +34,15 @@ function CartItem({ cartItem }) {
         alt={product.name}
       />
       <div>
-        <h3>{product.name}</h3>
-        <p>
-          {formatMoney(product.price * cartItem.quantity)}-
-          <em>
-            {cartItem.quantity} &times; {formatMoney(product.price)} each
-          </em>
-        </p>
+        <Typography component="h3" variant="h6">
+          {product.name}
+        </Typography>
+        <Typography>
+          Price: {formatMoney(product.price)}
+        </Typography>
+        <Typography>
+          Quantity: {cartItem.quantity}
+        </Typography>
       </div>
       <RemoveFromCart id={cartItem.id} />
     </CartItemStyles>
@@ -84,7 +86,7 @@ export default function Cart() {
           </Avatar>
           <Typography component="h1" variant="h5">
             {me.name}'s Cart
-        </Typography>
+          </Typography>
         </div>
 
         <Divider />
@@ -99,8 +101,12 @@ export default function Cart() {
         <Divider />
 
         <footer className={classes.checkout}>
-          <p>Total: {formatMoney(calcTotalPrice(me.cart))}</p>
-          <Checkout />
+        <Typography component="h3" variant="h6">
+          Total: {formatMoney(calcTotalPrice(me.cart))}
+        </Typography>
+
+        <Checkout />
+        
         </footer>
         <Divider />
 

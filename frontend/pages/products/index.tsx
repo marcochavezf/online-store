@@ -1,6 +1,6 @@
 import { useRouter } from 'next/dist/client/router';
-import Products from '../../components/Products';
 import Pagination from '../../components/Pagination';
+import Products from '../../components/product/Products';
 
 export default function ProductsPage() {
   const { query } = useRouter();

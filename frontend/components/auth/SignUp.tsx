@@ -1,8 +1,8 @@
-import gql from 'graphql-tag';
 import { useMutation } from '@apollo/client';
-import Form from './styles/Form';
-import useForm from '../lib/useForm';
-import Error from './ErrorMessage';
+import gql from 'graphql-tag';
+import useForm from '../../lib/hooks/useForm';
+import Error from '../ErrorMessage';
+import Form from '../styles/Form';
 
 const SIGNUP_MUTATION = gql`
   mutation SIGNUP_MUTATION(

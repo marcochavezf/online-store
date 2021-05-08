@@ -1,1 +1,2 @@
-export { default } from '../components/SignUp';
+export { default } from '../components/auth/SignUp';
+

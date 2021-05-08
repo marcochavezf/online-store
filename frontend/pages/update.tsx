@@ -1,4 +1,4 @@
-import UpdateProduct from '../components/UpdateProduct';
+import UpdateProduct from '../components/product/UpdateProduct';
 
 export default function UpdatePage({ query }) {
   return (

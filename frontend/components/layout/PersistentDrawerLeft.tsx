@@ -12,8 +12,8 @@ import PostAddIcon from '@material-ui/icons/PostAdd';
 import clsx from 'clsx';
 import { useRouter } from 'next/router';
 import React from 'react';
-import { useDrawer } from '../../lib/drawerState';
-import { useUser } from '../User';
+import { useUser } from '../../lib/hooks/useUser';
+import { useDrawer } from '../../lib/providers/drawerState';
 import CustomAppBar from './CustomAppBar';
 
 const drawerWidth = 240;

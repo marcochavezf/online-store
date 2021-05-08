@@ -1,28 +1,36 @@
-import styled from 'styled-components';
-import { loadStripe } from '@stripe/stripe-js';
+import { useMutation } from '@apollo/client';
+import { Button, Card, CardContent, createStyles, makeStyles, Theme } from '@material-ui/core';
 import {
   CardElement,
   Elements,
   useElements,
-  useStripe,
+  useStripe
 } from '@stripe/react-stripe-js';
-import { useState } from 'react';
-import nProgress from 'nprogress';
+import { loadStripe } from '@stripe/stripe-js';
 import gql from 'graphql-tag';
-import { useMutation } from '@apollo/client';
-import { Router, useRouter } from 'next/dist/client/router';
-import SickButton from './styles/SickButton';
-import { useCart } from '../lib/cartState';
-import { CURRENT_USER_QUERY } from './User';
+import { useRouter } from 'next/dist/client/router';
+import nProgress from 'nprogress';
+import React, { useState } from 'react';
+import { CURRENT_USER_QUERY } from '../../lib/hooks/useUser';
+import { useCart } from '../../lib/providers/cartState';
 
-const CheckoutFormStyles = styled.form`
-  box-shadow: 0 1px 2px 2px rgba(0, 0, 0, 0.04);
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  border-radius: 5px;
-  padding: 1rem;
-  display: grid;
-  grid-gap: 1rem;
-`;
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    card: {
+      marginTop: '8px',
+    },
+    form: {
+      display: 'grid',
+      gridGap: '1rem',
+    },
+    cardContent: {
+      paddingBottom: '16px !important',
+    },
+    checkoutButton: {
+      marginTop: '1rem'
+    }
+  }),
+);
 
 const CREATE_ORDER_MUTATION = gql`
   mutation CREATE_ORDER_MUTATION($token: String!) {
@@ -41,6 +49,7 @@ const CREATE_ORDER_MUTATION = gql`
 const stripeLib = loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY);
 
 function CheckoutForm() {
+  const classes = useStyles();
   const [error, setError] = useState();
   const [loading, setLoading] = useState(false);
   const stripe = useStripe();
@@ -96,12 +105,19 @@ function CheckoutForm() {
   }
 
   return (
-    <CheckoutFormStyles onSubmit={handleSubmit}>
-      {error && <p style={{ fontSize: 12 }}>{error.message}</p>}
-      {graphQLError && <p style={{ fontSize: 12 }}>{graphQLError.message}</p>}
-      <CardElement />
-      <SickButton>Check Out Now</SickButton>
-    </CheckoutFormStyles>
+    <Card className={classes.card}>
+      <CardContent className={classes.cardContent}>
+        <form className={classes.form} onSubmit={handleSubmit}>
+          {error && <p style={{ fontSize: 12 }}>{error.message}</p>}
+          {graphQLError && <p style={{ fontSize: 12 }}>{graphQLError.message}</p>}
+          <CardElement />
+          <Button variant="contained" color="primary">
+            Check Out Now
+          </Button>
+        </form>
+
+    </CardContent>
+    </Card>
   );
 }
 
@@ -114,3 +130,4 @@ function Checkout() {
 }
 
 export { Checkout };
+

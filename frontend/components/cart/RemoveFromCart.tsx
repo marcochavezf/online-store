@@ -1,16 +1,15 @@
 import { useMutation } from '@apollo/client';
+import { IconButton, makeStyles } from '@material-ui/core';
+import DeleteIcon from '@material-ui/icons/Delete';
 import gql from 'graphql-tag';
-import styled from 'styled-components';
+import React from 'react';
 
-const BigButton = styled.button`
-  font-size: 3rem;
-  background: none;
-  border: 0;
-  &:hover {
-    color: var(--red);
-    cursor: pointer;
+const useStyles = makeStyles((theme) => ({
+  button: {
+    width: '50px', 
+    height: '50px'
   }
-`;
+}));
 
 const REMOVE_FROM_CART_MUTATION = gql`
   mutation REMOVE_FROM_CART_MUTATION($id: ID!) {
@@ -25,6 +24,7 @@ function update(cache, payload) {
 }
 
 export default function RemoveFromCart({ id }) {
+  const classes = useStyles();
   const [removeFromCart, { loading }] = useMutation(REMOVE_FROM_CART_MUTATION, {
     variables: { id },
     update,
@@ -36,13 +36,12 @@ export default function RemoveFromCart({ id }) {
     // },
   });
   return (
-    <BigButton
-      onClick={removeFromCart}
+    <IconButton 
+      className={classes.button}
+      onClick={() => removeFromCart()}
       disabled={loading}
-      type="button"
-      title="Remove This Item from Cart"
-    >
-      &times;
-    </BigButton>
+      aria-label="delete">
+      <DeleteIcon />
+    </IconButton>
   );
 }

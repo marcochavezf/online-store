@@ -8,8 +8,8 @@ import MenuIcon from '@material-ui/icons/Menu';
 import { useRouter } from 'next/router';
 import React from 'react';
 import styled from 'styled-components';
-import { useDrawer } from '../../lib/drawerState';
-import { useUser } from '../User';
+import { useUser } from '../../lib/hooks/useUser';
+import { useDrawer } from '../../lib/providers/drawerState';
 import PersistentDrawerLeft from './PersistentDrawerLeft';
 
 const Logo = styled.h1`
