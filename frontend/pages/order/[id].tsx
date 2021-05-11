@@ -1,6 +1,8 @@
 import { useQuery } from '@apollo/client';
+import { CircularProgress } from '@material-ui/core';
 import gql from 'graphql-tag';
 import Head from 'next/head';
+import React from 'react';
 import ErrorMessage from '../../components/ErrorMessage';
 import OrderStyles from '../../components/styles/OrderStyles';
 import formatMoney from '../../lib/formatMoney';
@@ -34,13 +36,13 @@ export default function SingleOrderPage({ query }) {
   const { data, error, loading } = useQuery(SINGLE_ORDER_QUERY, {
     variables: { id: query.id },
   });
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <CircularProgress />;
   if (error) return <ErrorMessage error={error} />;
   const { order } = data;
   return (
     <OrderStyles>
       <Head>
-        <title>Sick Fits - {order.id}</title>
+        <title>Online Store - {order.id}</title>
       </Head>
       <p>
         <span>Order Id:</span>

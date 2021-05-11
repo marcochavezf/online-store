@@ -1,22 +1,39 @@
 import { useQuery } from '@apollo/client';
+import { CircularProgress } from '@material-ui/core';
+import Breadcrumbs from '@material-ui/core/Breadcrumbs';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
+import Link from '@material-ui/core/Link';
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 import gql from 'graphql-tag';
 import Head from 'next/head';
-import styled from 'styled-components';
+import { useRouter } from 'next/router';
+import React from 'react';
 import DisplayError from '../ErrorMessage';
 
-const ProductStyles = styled.div`
-  display: grid;
-  grid-auto-columns: 1fr;
-  grid-auto-flow: column;
-  max-width: var(--maxWidth);
-  justify-content: center;
-  align-items: top;
-  gap: 2rem;
-  img {
-    width: 100%;
-    object-fit: contain;
-  }
-`;
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      display: 'flex',
+      flexWrap: 'wrap', 
+      flexDirection: 'row',
+      marginTop: '25px',
+    },
+    breadcrumbs: {
+      marginTop: '10px',
+    },
+    content: {
+      flexGrow: 1,
+    },
+    cover: {
+      height: '400px',
+      flexGrow: 3,
+      minWidth: '300px',
+    },
+  }),
+);
 
 const SINGLE_ITEM_QUERY = gql`
   query SINGLE_ITEM_QUERY($id: ID!) {
@@ -36,28 +53,49 @@ const SINGLE_ITEM_QUERY = gql`
 `;
 
 export default function SingleProduct({ id }) {
+  const classes = useStyles();
+  const router = useRouter();
   const { data, loading, error } = useQuery(SINGLE_ITEM_QUERY, {
     variables: {
       id,
     },
   });
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <CircularProgress />;
   if (error) return <DisplayError error={error} />;
   const { Product } = data;
   // console.log(Product);
   return (
-    <ProductStyles>
+    <>
+    <Breadcrumbs aria-label="breadcrumb" className={classes.breadcrumbs}>
+      <Link color="inherit" onClick={() => router.push('/products')}>
+        Products
+      </Link>
+      <Link
+        color="textPrimary"
+        underline="none"
+      >
+        {Product.name}
+      </Link>
+    </Breadcrumbs>
+    <Card className={classes.root}>
       <Head>
-        <title>Sick Fits | {Product.name}</title>
+        <title>Online Store | {Product.name}</title>
       </Head>
-      <img
-        src={Product.photo.image.publicUrlTransformed}
-        alt={Product.photo.altText}
+      <CardMedia
+        className={classes.cover}
+        image={Product.photo.image.publicUrlTransformed}
+        title={Product.photo.altText}
       />
-      <div className="details">
-        <h2>{Product.name}</h2>
-        <p>{Product.description}</p>
-      </div>
-    </ProductStyles>
+      <CardContent className={classes.content}>
+        <Typography component="h5" variant="h5">
+          {Product.name}
+        </Typography>
+        <Typography variant="subtitle1" color="textSecondary">
+          {Product.description}
+        </Typography>
+      </CardContent>
+    </Card>
+    
+    </>
   );
 }

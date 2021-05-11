@@ -1,4 +1,5 @@
 import { useMutation } from '@apollo/client';
+import { Button } from '@material-ui/core';
 import gql from 'graphql-tag';
 import { CURRENT_USER_QUERY } from '../../lib/hooks/useUser';
 
@@ -16,8 +17,8 @@ export default function AddToCart({ id }) {
     refetchQueries: [{ query: CURRENT_USER_QUERY }],
   });
   return (
-    <button disabled={loading} type="button" onClick={addToCart}>
+    <Button disabled={loading} size="small" color="primary" onClick={() => addToCart()}>
       Add{loading && 'ing'} To Cart 🛒
-    </button>
+    </Button>
   );
 }

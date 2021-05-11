@@ -1,4 +1,5 @@
 import { useMutation, useQuery } from '@apollo/client';
+import { CircularProgress } from '@material-ui/core';
 import gql from 'graphql-tag';
 import useForm from '../../lib/hooks/useForm';
 import DisplayError from '../ErrorMessage';
@@ -53,7 +54,7 @@ export default function UpdateProduct({ id }) {
     }
   );
   console.log(inputs);
-  if (loading) return <p>loading...</p>;
+  if (loading) return <CircularProgress />;
   // 3. We need the form to handle the updates
   return (
     <Form

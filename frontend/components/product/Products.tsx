@@ -1,5 +1,7 @@
 import { useQuery } from '@apollo/client';
+import { CircularProgress } from '@material-ui/core';
 import gql from 'graphql-tag';
+import React from 'react';
 import styled from 'styled-components';
 import { perPage } from '../../config';
 import Product from './Product';
@@ -36,7 +38,7 @@ export default function Products({ page }) {
   });
   // console.log(data, error, loading);
   
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <CircularProgress />;
   if (error) return <p>Error: {error.message}</p>;
   return (
     <div>

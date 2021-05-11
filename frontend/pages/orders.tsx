@@ -1,7 +1,9 @@
 import { useQuery } from '@apollo/client';
+import { CircularProgress } from '@material-ui/core';
 import gql from 'graphql-tag';
 import Head from 'next/head';
 import Link from 'next/link';
+import React from 'react';
 import styled from 'styled-components';
 import ErrorMessage from '../components/ErrorMessage';
 import OrderItemStyles from '../components/styles/OrderItemStyles';
@@ -44,7 +46,7 @@ function countItemsInAnOrder(order) {
 
 export default function OrdersPage() {
   const { data, error, loading } = useQuery(USER_ORDERS_QUERY);
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <CircularProgress />;
   if (error) return <ErrorMessage error={error} />;
   const { allOrders } = data;
   return (
