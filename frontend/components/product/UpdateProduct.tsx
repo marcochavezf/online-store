@@ -1,9 +1,15 @@
 import { useMutation, useQuery } from '@apollo/client';
-import { CircularProgress } from '@material-ui/core';
+import {
+  Button, CircularProgress,
+  Grid,
+  Paper,
+  TextField
+} from '@material-ui/core';
 import gql from 'graphql-tag';
+import Router from 'next/router';
+import React from 'react';
 import useForm from '../../lib/hooks/useForm';
 import DisplayError from '../ErrorMessage';
-import Form from '../styles/Form';
 
 const SINGLE_PRODUCT_QUERY = gql`
   query SINGLE_PRODUCT_QUERY($id: ID!) {
@@ -35,6 +41,7 @@ const UPDATE_PRODUCT_MUTATION = gql`
   }
 `;
 
+// form example using react-final-form: https://codesandbox.io/s/9ywq085k9w?file=/src/index.js
 export default function UpdateProduct({ id }) {
   // 1. We need to get the existing product
   const { data, error, loading } = useQuery(SINGLE_PRODUCT_QUERY, {
@@ -57,65 +64,86 @@ export default function UpdateProduct({ id }) {
   if (loading) return <CircularProgress />;
   // 3. We need the form to handle the updates
   return (
-    <Form
-      onSubmit={async (e) => {
-        e.preventDefault();
-        const res = await updateProduct({
-          variables: {
-            id,
-            name: inputs.name,
-            description: inputs.description,
-            price: inputs.price,
-          },
-        }).catch(console.error);
-        console.log(res);
-        // Submit the inputfields to the backend:
-        // TODO: Handle Submit!!!
-        // const res = await createProduct();
-        // clearForm();
-        // // Go to that product's page!
-        // Router.push({
-        //   pathname: `/product/${res.data.createProduct.id}`,
-        // });
-      }}
-    >
-      <DisplayError error={error || updateError} />
-      <fieldset disabled={updateLoading} aria-busy={updateLoading}>
-        <label htmlFor="name">
-          Name
-          <input
-            type="text"
-            id="name"
-            name="name"
-            placeholder="Name"
-            value={inputs.name}
-            onChange={handleChange}
-          />
-        </label>
-        <label htmlFor="price">
-          Price
-          <input
-            type="number"
-            id="price"
-            name="price"
-            placeholder="price"
-            value={inputs.price}
-            onChange={handleChange}
-          />
-        </label>
-        <label htmlFor="description">
-          Description
-          <textarea
-            id="description"
-            name="description"
-            placeholder="Description"
-            value={inputs.description}
-            onChange={handleChange}
-          />
-        </label>
-
-        <button type="submit">Update Product</button>
-      </fieldset>
-    </Form>
+    <div style={{ padding: 16, margin: 'auto', maxWidth: 600 }}>
+      <form
+        onSubmit={async (e) => {
+          e.preventDefault();
+          const res = await updateProduct({
+            variables: {
+              id,
+              name: inputs.name,
+              description: inputs.description,
+              price: inputs.price,
+            },
+          }).catch(console.error);
+          // console.log(res);
+          if (res) {
+            // Go to that product's page!
+            Router.push({
+              pathname: `/product/${id}`,
+            });
+          }
+        }}
+      >
+        <Paper style={{ padding: 16 }}>
+          <Grid container alignItems="flex-start" spacing={2}>
+            <Grid item xs={6}>
+              <TextField
+                fullWidth
+                required
+                name="name"
+                id="name"
+                type="text"
+                label="Name"
+                value={inputs.name}
+                onChange={handleChange}
+                disabled={updateLoading}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                fullWidth
+                required
+                label="Price"
+                type="number"
+                id="price"
+                name="price"
+                placeholder="price"
+                value={inputs.price}
+                onChange={handleChange}
+                disabled={updateLoading}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                id="description"
+                name="description"
+                multiline
+                label="Description"
+                value={inputs.description}
+                onChange={handleChange}
+                disabled={updateLoading}
+              />
+            </Grid>
+            <Grid item style={{ marginTop: 16 }}>
+              <Button
+                variant="contained"
+                color="primary"
+                type="submit"
+                disabled={updateLoading}
+              >
+                Update Product
+                </Button>
+            </Grid>
+            { updateLoading && (
+              <Grid item style={{ marginTop: 16 }}>
+                <CircularProgress />
+              </Grid>) }
+          </Grid>
+        </Paper>
+        <DisplayError error={error || updateError} />
+      </form>
+    </div>
   );
 }
