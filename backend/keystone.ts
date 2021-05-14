@@ -1,26 +1,25 @@
 import { createAuth } from '@keystone-next/auth';
 import { config, createSchema } from '@keystone-next/keystone/schema';
 import {
-  withItemData,
-  statelessSessions,
+  statelessSessions, withItemData
 } from '@keystone-next/keystone/session';
-import { permissionsList } from './schemas/fields';
-import { Role } from './schemas/Role';
-import { OrderItem } from './schemas/OrderItem';
-import { Order } from './schemas/Order';
-import { CartItem } from './schemas/CartItem';
-import { ProductImage } from './schemas/ProductImage';
-import { Product } from './schemas/Product';
-import { User } from './schemas/User';
 import 'dotenv/config';
-import { insertSeedData } from './seed-data';
 import { sendPasswordResetEmail } from './lib/mail';
 import { extendGraphqlSchema } from './mutations';
+import { CartItem } from './schemas/CartItem';
+import { permissionsList } from './schemas/fields';
+import { Order } from './schemas/Order';
+import { OrderItem } from './schemas/OrderItem';
+import { Product } from './schemas/Product';
+import { ProductImage } from './schemas/ProductImage';
+import { Role } from './schemas/Role';
+import { User } from './schemas/User';
+import { insertSeedData } from './seed-data';
 
-function check(name: string) {}
+function check(name: string) { }
 
 const databaseURL =
-  process.env.DATABASE_URL || 'mongodb://localhost/keystone-sick-fits-tutorial';
+  process.env.DATABASE_URL || 'mongodb://localhost/keystone-online-store';
 
 const sessionConfig = {
   maxAge: 60 * 60 * 24 * 360, // How long they stay signed in?

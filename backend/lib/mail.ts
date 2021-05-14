@@ -21,7 +21,7 @@ function makeANiceEmail(text: string) {
       <h2>Hello There!</h2>
       <p>${text}</p>
 
-      <p>😘, Wes Bos</p>
+      <p>Marco Chávez</p>
     </div>
   `;
 }
@@ -49,13 +49,13 @@ export async function sendPasswordResetEmail(
   // email the user a token
   const info = (await transport.sendMail({
     to,
-    from: 'wes@wesbos.com',
+    from: 'marcochavezf@gmail.com',
     subject: 'Your password reset token!',
     html: makeANiceEmail(`Your Password Reset Token is here!
       <a href="${process.env.FRONTEND_URL}/reset?token=${resetToken}">Click Here to reset</a>
     `),
   })) as MailResponse;
-  if(process.env.MAIL_USER.includes('ethereal.email')) {
+  if (process.env.MAIL_USER.includes('ethereal.email')) {
     console.log(`💌 Message Sent!  Preview it at ${getTestMessageUrl(info)}`);
 
   }
