@@ -1,10 +1,9 @@
 import { useQuery } from '@apollo/client';
-import { CircularProgress } from '@material-ui/core';
+import { Card, CircularProgress, createStyles, makeStyles, Theme } from '@material-ui/core';
 import gql from 'graphql-tag';
 import Head from 'next/head';
 import React from 'react';
 import ErrorMessage from '../../components/ErrorMessage';
-import OrderStyles from '../../components/styles/OrderStyles';
 import formatMoney from '../../lib/formatMoney';
 
 const SINGLE_ORDER_QUERY = gql`
@@ -32,7 +31,44 @@ const SINGLE_ORDER_QUERY = gql`
   }
 `;
 
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    paper: {
+      padding: '2rem',
+      borderTop: `10px solid ${ theme.palette.secondary.main }`,
+      '& > p': {
+        display: 'grid',
+        gridTemplateColumns: '1fr 5fr',
+        margin: 0,
+        borderBottom: '1px solid var(--offWhite)',
+        '& span' : {
+          padding: '1rem',
+          '&:first-child': {
+            fontWeight: 900,
+            textAlign: 'right',
+          }
+        }
+      }
+    },
+    orderItem: {
+      borderBottom: '1px solid var(--offWhite)',
+      display: 'grid',
+      gridTemplateColumns: '300px 1fr',
+      alignItems: 'center',
+      gridGap: '2rem',
+      margin: '2rem 0',
+      paddingBottom: '2rem',
+      '& img': {
+        width: '100%',
+        height: '100%',
+        objectFit: 'cover',
+      }
+    }
+  }),
+);
+
 export default function SingleOrderPage({ query }) {
+  const classes = useStyles();
   const { data, error, loading } = useQuery(SINGLE_ORDER_QUERY, {
     variables: { id: query.id },
   });
@@ -40,7 +76,7 @@ export default function SingleOrderPage({ query }) {
   if (error) return <ErrorMessage error={error} />;
   const { order } = data;
   return (
-    <OrderStyles>
+    <Card className={classes.paper}>
       <Head>
         <title>Online Store - {order.id}</title>
       </Head>
@@ -60,9 +96,9 @@ export default function SingleOrderPage({ query }) {
         <span>Item Count:</span>
         <span>{order.items.length}</span>
       </p>
-      <div className="items">
+      <div>
         {order.items.map((item) => (
-          <div className="order-item" key={item.id}>
+          <div className={classes.orderItem} key={item.id}>
             <img src={item.photo.image.publicUrlTransformed} alt={item.title} />
             <div className="item-details">
               <h2>{item.name}</h2>
@@ -74,6 +110,6 @@ export default function SingleOrderPage({ query }) {
           </div>
         ))}
       </div>
-    </OrderStyles>
+    </Card>
   );
 }

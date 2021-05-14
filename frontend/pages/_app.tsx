@@ -30,10 +30,13 @@ function MyApp({ Component, pageProps, apollo }) {
   return (
     <ApolloProvider client={apollo}>
       <ThemeProvider theme={theme}>
+        
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
+        {/* <LinearProgress style={{ zIndex: 9999 }} /> */}
         <CartStateProvider>
           <DrawerStateProvider>
+            {/* <LinearProgress style={{ zIndex: 9999, position: 'fixed', width: '100%' }} color="secondary" /> */}
             <Page>
               <Component {...pageProps} />
             </Page>

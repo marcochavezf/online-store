@@ -1,8 +1,9 @@
 import { useMutation } from '@apollo/client';
+import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import gql from 'graphql-tag';
+import React from 'react';
 import useForm from '../../lib/hooks/useForm';
-import Error from '../ErrorMessage';
-import Form from '../styles/Form';
+import AuthLayout from './AuthLayout';
 
 const SIGNUP_MUTATION = gql`
   mutation SIGNUP_MUTATION(
@@ -19,7 +20,7 @@ const SIGNUP_MUTATION = gql`
 `;
 
 export default function SignUp() {
-  const { inputs, handleChange, resetForm } = useForm({
+  const { inputs, handleChange, resetField, resetForm } = useForm({
     email: '',
     name: '',
     password: '',
@@ -33,56 +34,52 @@ export default function SignUp() {
     e.preventDefault(); // stop the form from submitting
     console.log(inputs);
     const res = await signup().catch(console.error);
-    console.log(res);
-    console.log({ data, loading, error });
-    resetForm();
+    // console.log(res);
+    // console.log({ data, loading, error });
+    if (res) {
+      resetForm();
+    } else {
+      resetField('password');
+    }
     // Send the email and password to the graphqlAPI
   }
   return (
-    <Form method="POST" onSubmit={handleSubmit}>
-      <h2>Sign Up For an Account</h2>
-      <Error error={error} />
-      <fieldset>
-        {data?.createUser && (
-          <p>
-            Signed up with {data.createUser.email} - Please Go Head and Sign in!
-          </p>
-        )}
-        <label htmlFor="email">
-          Your Name
-          <input
-            type="text"
-            name="name"
-            placeholder="Your Name"
-            autoComplete="name"
-            value={inputs.name}
-            onChange={handleChange}
-          />
-        </label>
-        <label htmlFor="email">
-          Email
-          <input
-            type="email"
-            name="email"
-            placeholder="Your Email Address"
-            autoComplete="email"
-            value={inputs.email}
-            onChange={handleChange}
-          />
-        </label>
-        <label htmlFor="password">
-          Password
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            autoComplete="password"
-            value={inputs.password}
-            onChange={handleChange}
-          />
-        </label>
-        <button type="submit">Sign In!</button>
-      </fieldset>
-    </Form>
+    <AuthLayout 
+      title="Sign Up For an Account" 
+      AvatarIcon={VpnKeyIcon} 
+      error={error}
+      successMessage={data?.createUser && `Signed up with ${data.createUser.email} - Please Go Head and Sign in!`}
+      handleSubmit={handleSubmit}
+      handleChange={handleChange}
+      loading={loading}
+      fields={[
+        {
+          id: 'name',
+          name: 'name',
+          label: 'Your Name',
+          value: inputs.name,
+          type: 'text'
+        },
+        {
+          id: 'email',
+          name: 'email',
+          label: 'Email Address',
+          value: inputs.email,
+          type: 'email'
+        },
+        {
+          id: 'password',
+          name: 'password',
+          label: 'Password',
+          value: inputs.password,
+          type: 'password'
+        },
+      ]}
+      submitLabel="Sign Up"
+      footerLinks={{
+        left: { href: '/reset_password', label: 'Forgot password?' },
+        right: { href: '/signin', label: 'Sign In' },
+      }}
+    />
   );
 }

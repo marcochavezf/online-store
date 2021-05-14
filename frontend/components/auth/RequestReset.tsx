@@ -1,8 +1,9 @@
 import { useMutation } from '@apollo/client';
+import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import gql from 'graphql-tag';
+import React from 'react';
 import useForm from '../../lib/hooks/useForm';
-import Error from '../ErrorMessage';
-import Form from '../styles/Form';
+import AuthLayout from './AuthLayout';
 
 const REQUEST_RESET_MUTATION = gql`
   mutation REQUEST_RESET_MUTATION($email: String!) {
@@ -17,7 +18,7 @@ export default function RequestReset() {
   const { inputs, handleChange, resetForm } = useForm({
     email: '',
   });
-  const [signup, { data, loading, error }] = useMutation(
+  const [requestReset, { data, loading, error }] = useMutation(
     REQUEST_RESET_MUTATION,
     {
       variables: inputs,
@@ -28,34 +29,35 @@ export default function RequestReset() {
   async function handleSubmit(e) {
     e.preventDefault(); // stop the form from submitting
     console.log(inputs);
-    const res = await signup().catch(console.error);
+    const res = await requestReset().catch(console.error);
     console.log(res);
     console.log({ data, loading, error });
     resetForm();
     // Send the email and password to the graphqlAPI
   }
   return (
-    <Form method="POST" onSubmit={handleSubmit}>
-      <h2>Request a Password Reset</h2>
-      <Error error={error} />
-      <fieldset>
-        {data?.sendUserPasswordResetLink === null && (
-          <p>Success! Check your email for a link!</p>
-        )}
-
-        <label htmlFor="email">
-          Email
-          <input
-            type="email"
-            name="email"
-            placeholder="Your Email Address"
-            autoComplete="email"
-            value={inputs.email}
-            onChange={handleChange}
-          />
-        </label>
-        <button type="submit">Request Reset!</button>
-      </fieldset>
-    </Form>
+    <AuthLayout 
+      AvatarIcon={VpnKeyIcon}
+      title="Request a Password Reset"
+      successMessage={data?.sendUserPasswordResetLink === null && 'Success! Check your email for a link!'} 
+      fields={[
+        {
+          id: 'email',
+          name: 'email',
+          label: 'Email Address',
+          value: inputs.email,
+          type: 'email'
+        },
+      ]}
+      submitLabel="Request Reset"
+      footerLinks={{
+        left: { href: '/signin', label: 'Sign In' },
+        right: { href: '/signup', label: 'Don\'t have an account? Sign Up' },
+      }}
+      error={error}
+      handleSubmit={handleSubmit}
+      handleChange={handleChange}
+      loading={loading}
+    />
   );
 }

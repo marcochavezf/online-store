@@ -31,6 +31,13 @@ export default function useForm(initial = {}) {
     });
   }
 
+  function resetField(name: string){
+    setInputs({
+      ...inputs,
+      [name]: '',
+    });
+  }
+
   function resetForm() {
     setInputs(initial);
   }
@@ -46,6 +53,7 @@ export default function useForm(initial = {}) {
   return {
     inputs,
     handleChange,
+    resetField,
     resetForm,
     clearForm,
   };

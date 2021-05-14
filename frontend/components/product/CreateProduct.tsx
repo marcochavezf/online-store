@@ -1,9 +1,15 @@
 import { useMutation } from '@apollo/client';
+import {
+  Button, CircularProgress,
+  Grid,
+  Paper,
+  TextField
+} from '@material-ui/core';
 import gql from 'graphql-tag';
 import Router from 'next/router';
+import React from 'react';
 import useForm from '../../lib/hooks/useForm';
 import DisplayError from '../ErrorMessage';
-import Form from '../styles/Form';
 import { ALL_PRODUCTS_QUERY } from './Products';
 
 const CREATE_PRODUCT_MUTATION = gql`
@@ -34,9 +40,9 @@ const CREATE_PRODUCT_MUTATION = gql`
 export default function CreateProduct() {
   const { inputs, handleChange, clearForm, resetForm } = useForm({
     image: '',
-    name: 'Nice Shoes',
-    price: 34234,
-    description: 'These are the best shoes!',
+    name: '',
+    price: '',
+    description: '',
   });
   const [createProduct, { loading, error, data }] = useMutation(
     CREATE_PRODUCT_MUTATION,
@@ -46,65 +52,90 @@ export default function CreateProduct() {
     }
   );
   return (
-    <Form
-      onSubmit={async (e) => {
-        e.preventDefault();
-        // Submit the inputfields to the backend:
-        const res = await createProduct();
-        clearForm();
-        // Go to that product's page!
-        Router.push({
-          pathname: `/product/${res.data.createProduct.id}`,
-        });
-      }}
-    >
-      <DisplayError error={error} />
-      <fieldset disabled={loading} aria-busy={loading}>
-        <label htmlFor="image">
-          Image
-          <input
-            required
-            type="file"
-            id="image"
-            name="image"
-            onChange={handleChange}
-          />
-        </label>
-        <label htmlFor="name">
-          Name
-          <input
-            type="text"
-            id="name"
-            name="name"
-            placeholder="Name"
-            value={inputs.name}
-            onChange={handleChange}
-          />
-        </label>
-        <label htmlFor="price">
-          Price
-          <input
-            type="number"
-            id="price"
-            name="price"
-            placeholder="price"
-            value={inputs.price}
-            onChange={handleChange}
-          />
-        </label>
-        <label htmlFor="description">
-          Description
-          <textarea
-            id="description"
-            name="description"
-            placeholder="Description"
-            value={inputs.description}
-            onChange={handleChange}
-          />
-        </label>
-
-        <button type="submit">+ Add Product</button>
-      </fieldset>
-    </Form>
+    <div style={{ padding: 16, margin: 'auto', maxWidth: 600 }}>
+      <form
+        onSubmit={async (e) => {
+          e.preventDefault();
+          // Submit the inputfields to the backend:
+          const res = await createProduct();
+          clearForm();
+          // Go to that product's page!
+          Router.push({
+            pathname: `/product/${res.data.createProduct.id}`,
+          });
+        }}
+      >
+        <Paper style={{ padding: 16 }}>
+          <Grid container alignItems="flex-start" spacing={2}>
+            <Grid item xs={6}>
+              <TextField
+                fullWidth
+                required
+                name="name"
+                id="name"
+                type="text"
+                label="Name"
+                value={inputs.name}
+                onChange={handleChange}
+                disabled={loading}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                fullWidth
+                required
+                label="Price (in cents)"
+                type="number"
+                id="price"
+                name="price"
+                placeholder="price"
+                value={inputs.price}
+                onChange={handleChange}
+                disabled={loading}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                id="description"
+                name="description"
+                multiline
+                label="Description"
+                value={inputs.description}
+                onChange={handleChange}
+                disabled={loading}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                required
+                name="image"
+                id="image"
+                type="file"
+                label="Image"
+                onChange={handleChange}
+                disabled={loading}
+              />
+            </Grid>
+            <Grid item style={{ marginTop: 16 }}>
+              <Button
+                variant="contained"
+                color="primary"
+                type="submit"
+                disabled={loading}
+              >
+                + Add Product
+              </Button>
+            </Grid>
+            { loading && (
+              <Grid item style={{ marginTop: 16 }}>
+                <CircularProgress />
+              </Grid>) }
+          </Grid>
+        </Paper>
+        <DisplayError error={error} />
+      </form>
+    </div>
   );
 }

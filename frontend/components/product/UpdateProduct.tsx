@@ -104,7 +104,7 @@ export default function UpdateProduct({ id }) {
               <TextField
                 fullWidth
                 required
-                label="Price"
+                label="Price (in cents)"
                 type="number"
                 id="price"
                 name="price"

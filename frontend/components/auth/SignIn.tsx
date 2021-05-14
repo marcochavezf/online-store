@@ -1,9 +1,10 @@
 import { useMutation } from '@apollo/client';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import gql from 'graphql-tag';
+import React from 'react';
 import useForm from '../../lib/hooks/useForm';
 import { CURRENT_USER_QUERY } from '../../lib/hooks/useUser';
-import Error from '../ErrorMessage';
-import Form from '../styles/Form';
+import AuthLayout from './AuthLayout';
 
 const SIGNIN_MUTATION = gql`
   mutation SIGNIN_MUTATION($email: String!, $password: String!) {
@@ -43,38 +44,38 @@ export default function SignIn() {
   }
   const error =
     data?.authenticateUserWithPassword.__typename ===
-    'UserAuthenticationWithPasswordFailure'
+      'UserAuthenticationWithPasswordFailure'
       ? data?.authenticateUserWithPassword
       : undefined;
   return (
-    <Form method="POST" onSubmit={handleSubmit}>
-      <h2>Sign Into Your Account</h2>
-      <Error error={error} />
-      <fieldset>
-        <label htmlFor="email">
-          Email
-          <input
-            type="email"
-            name="email"
-            placeholder="Your Email Address"
-            autoComplete="email"
-            value={inputs.email}
-            onChange={handleChange}
-          />
-        </label>
-        <label htmlFor="password">
-          Password
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            autoComplete="password"
-            value={inputs.password}
-            onChange={handleChange}
-          />
-        </label>
-        <button type="submit">Sign In!</button>
-      </fieldset>
-    </Form>
+    <AuthLayout 
+      title="Sign in" 
+      AvatarIcon={LockOutlinedIcon} 
+      error={error}
+      handleSubmit={handleSubmit}
+      handleChange={handleChange}
+      loading={loading}
+      fields={[
+        {
+          id: 'email',
+          name: 'email',
+          label: 'Email Address',
+          value: inputs.email,
+          type: 'email'
+        },
+        {
+          id: 'password',
+          name: 'password',
+          label: 'Password',
+          value: inputs.password,
+          type: 'password'
+        },
+      ]}
+      submitLabel="Sign In"
+      footerLinks={{
+        left: { href: '/reset_password', label: 'Forgot password?' },
+        right: { href: '/signup', label: 'Don\'t have an account? Sign Up' },
+      }}
+    />
   );
 }

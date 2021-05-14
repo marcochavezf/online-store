@@ -1,8 +1,9 @@
 import { useMutation } from '@apollo/client';
+import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import gql from 'graphql-tag';
+import React from 'react';
 import useForm from '../../lib/hooks/useForm';
-import Error from '../ErrorMessage';
-import Form from '../styles/Form';
+import AuthLayout from './AuthLayout';
 
 const RESET_MUTATION = gql`
   mutation RESET_MUTATION(
@@ -44,38 +45,35 @@ export default function ResetPassword({ token }) {
     // Send the email and password to the graphqlAPI
   }
   return (
-    <Form method="POST" onSubmit={handleSubmit}>
-      <h2>Reset Your Password</h2>
-      <Error error={error || successfulError} />
-      <fieldset>
-        {data?.redeemUserPasswordResetToken === null && (
-          <p>Success! You can Now sign in</p>
-        )}
-
-        <label htmlFor="email">
-          Email
-          <input
-            type="email"
-            name="email"
-            placeholder="Your Email Address"
-            autoComplete="email"
-            value={inputs.email}
-            onChange={handleChange}
-          />
-        </label>
-        <label htmlFor="password">
-          Password
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            autoComplete="password"
-            value={inputs.password}
-            onChange={handleChange}
-          />
-        </label>
-        <button type="submit">Request Reset!</button>
-      </fieldset>
-    </Form>
+    <AuthLayout 
+      AvatarIcon={VpnKeyIcon}
+      title="Reset Your Password"
+      successMessage={data?.redeemUserPasswordResetToken === null && 'Success! You can Now sign in'}
+      fields={[
+        {
+          id: 'email',
+          name: 'email',
+          label: 'Email Address',
+          value: inputs.email,
+          type: 'email'
+        },
+        {
+          id: 'password',
+          name: 'password',
+          label: 'Password',
+          value: inputs.password,
+          type: 'password'
+        },
+      ]}
+      submitLabel="Request Reset"
+      error={error || successfulError}
+      footerLinks={{
+        left: { href: '/signin', label: 'Sign In' },
+        right: { href: '/signup', label: 'Don\'t have an account? Sign Up' },
+      }}
+      handleSubmit={handleSubmit}
+      handleChange={handleChange}
+      loading={loading}
+    />
   );
 }

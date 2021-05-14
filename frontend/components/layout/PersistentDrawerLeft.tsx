@@ -95,10 +95,10 @@ export default function PersistentDrawerLeft({ children }) {
             <ListItemIcon><ListAltIcon /></ListItemIcon>
             <ListItemText primary='Products' />
           </ListItem>
-          {user && <ListItem button onClick={navigateTo('/sell')}>
+          <ListItem button onClick={navigateTo('/sell')}>
             <ListItemIcon><PostAddIcon /></ListItemIcon>
             <ListItemText primary='Sell' />
-          </ListItem>}
+          </ListItem>
         </List>
         <Divider />
       </Drawer>

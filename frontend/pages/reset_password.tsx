@@ -1,2 +1,2 @@
-export { default } from '../components/auth/ResetPassword';
+export { default } from '../components/auth/RequestReset';
 
